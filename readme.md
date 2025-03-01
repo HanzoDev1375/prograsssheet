@@ -46,6 +46,58 @@ using in kotlin
     }
 ```
 
+
+## LayoutSheetEditText
+
+
+using in java
+
+```java
+binding.btn.setOnLongClickListener(
+        i -> {
+          var layout = new LayoutSheetEditText(MainActivity.this);
+          layout.setTitle(R.string.app_name);
+          layout.setokClick(
+              it -> {
+                Toast.makeText(getApplicationContext(), layout.getText(), 2).show();
+                layout.dismiss();
+              });
+          layout.setnoClick(
+              it -> {
+                Toast.makeText(getApplicationContext(), layout.getTitle(), 2).show();
+                layout.dismiss();
+              });
+          layout.show();
+          return true;
+        });
+```
+
+
+using in kt 
+
+
+``` kt
+binding.btn.setOnLongClickListener {
+    val layout = LayoutSheetEditText(this@MainActivity)
+    layout.setTitle(R.string.app_name)
+    
+    layout.setokClick {
+        Toast.makeText(applicationContext, layout.text, 2).show()
+        layout.dismiss()
+    }
+    
+    layout.setnoClick {
+        Toast.makeText(applicationContext, layout.title, 2).show()
+        layout.dismiss()
+    }
+    
+    layout.show()
+    true
+}
+
+```        
+
+
 ### Mod
 You can define an item with the help of State Mod in 2 modes: V&H (vertical and horizontal).
 
