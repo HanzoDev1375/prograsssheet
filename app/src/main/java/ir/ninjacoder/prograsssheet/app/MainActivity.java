@@ -1,8 +1,14 @@
 package ir.ninjacoder.prograsssheet.app;
 
+import android.Manifest;
 import android.widget.Toast;
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import android.content.pm.PackageManager;
+import ir.ninjacoder.prograsssheet.MusicSheet;
 import ir.ninjacoder.prograsssheet.PrograssSheet;
 import ir.ninjacoder.prograsssheet.LayoutSheetEditText;
 import ir.ninjacoder.prograsssheet.app.databinding.ActivityMainBinding;
@@ -21,12 +27,27 @@ public class MainActivity extends AppCompatActivity {
     // set content view to binding's root
     setContentView(binding.getRoot());
     PrograssSheet sheet = new PrograssSheet(this);
+    if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            == PackageManager.PERMISSION_DENIED
+        || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            == PackageManager.PERMISSION_DENIED) {
+      ActivityCompat.requestPermissions(
+          this,
+          new String[] {
+            Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE
+          },
+          1000);
+    }
+    
+    MusicSheet mso = new MusicSheet(MainActivity.this,"/storage/emulated/0/Download/Ali Danial - Ba Cheshat (320).mp3");
 
     binding.btn.setOnClickListener(
         i -> {
-          sheet.setMode(StateMod.PROGRASSH);
-          sheet.setTitle("Hello Words393e9e9kckdkddkekekekeowowowowo2929292929292");
-          sheet.show();
+          //          sheet.setMode(StateMod.PROGRASSH);
+          //          sheet.setTitle("Hello Words393e9e9kckdkddkekekekeowowowowo2929292929292");
+          //          sheet.show();
+          
+          mso.show();
         });
     binding.btn.setOnLongClickListener(
         i -> {
@@ -45,6 +66,18 @@ public class MainActivity extends AppCompatActivity {
           layout.show();
           return true;
         });
+    
+    getOnBackPressedDispatcher()
+        .addCallback(
+            this,
+            new OnBackPressedCallback(true) {
+
+              @Override
+              public void handleOnBackPressed() {
+                mso.dismiss();
+                
+              }
+            });
   }
 
   @Override

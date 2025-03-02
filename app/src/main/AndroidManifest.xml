@@ -1,22 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<manifest 
+<manifest
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <application 
-        android:allowBackup="true" 
-        android:icon="@mipmap/ic_launcher" 
-        android:roundIcon="@mipmap/ic_launcher" 
-        android:label="@string/app_name" 
-        android:supportsRtl="true" 
-        android:theme="@style/AppTheme">
-        <activity 
-            android:name="MainActivity" 
-            android:exported="true">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:name=".App"
+        android:enableOnBackInvokedCallback="true"
+        android:theme="@style/AppTheme"
+        
+    >
+        <activity
+            android:name="MainActivity"
+            android:exported="true"
+            
+        >
             <intent-filter>
-                <action 
-                    android:name="android.intent.action.MAIN" />
-                <category 
-                    android:name="android.intent.category.LAUNCHER" />
+                <action
+                    android:name="android.intent.action.MAIN"></action>
+                <category
+                    android:name="android.intent.category.LAUNCHER"></category>
             </intent-filter>
         </activity>
     </application>

@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    >
+
+    <LinearLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:gravity="center_horizontal|center_vertical"
+        android:orientation="vertical"
+        android:id="@+id/linear1"
+        android:layout_gravity="center_horizontal"
+        >
+
+        <ImageView
+            android:layout_height="250dp"
+            android:layout_width="250dp"
+            android:scaleType="centerInside"
+            android:focusable="false"
+            android:id="@+id/musicicon"
+            android:layout_gravity="center_horizontal|center_vertical"
+            ></ImageView>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:padding="8dp"
+            android:textSize="18sp"
+            android:layout_marginTop="5dp"
+            android:focusable="false"
+            android:id="@+id/titlemusic"
+            android:text="Title"
+            android:layout_gravity="center_horizontal|center_vertical"
+            ></TextView>
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:padding="8dp"
+            android:textSize="14sp"
+            android:focusable="false"
+            android:id="@+id/submusic"
+            android:text="TextView"
+            android:layout_gravity="center_horizontal|center_vertical"
+            ></TextView>
+
+        <SeekBar
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:padding="6dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:focusable="false"
+            android:id="@+id/musicseekbar"
+            ></SeekBar>
+
+        <LinearLayout
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:id="@+id/linear2"
+            >
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:gravity="right"
+                android:textSize="12sp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:id="@+id/tvtr"
+                android:text="400"
+                ></TextView>
+
+            <TextView
+                android:layout_height="match_parent"
+                android:layout_width="wrap_content"
+                android:textSize="12sp"
+                android:gravity="left"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="1"
+                android:id="@+id/tvname"
+                android:text="4444"
+                ></TextView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_height="100dp"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal|center_vertical"
+            android:padding="8dp"
+            android:orientation="horizontal"
+            >
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/musicprevious"
+                android:scaleType="centerInside"
+                android:layout_weight="1"
+                android:focusable="false"
+                android:id="@+id/pre"
+                ></ImageView>
+
+            <ImageView
+                android:layout_height="50dp"
+                android:layout_width="50dp"
+                android:src="@drawable/musicplay"
+                android:scaleType="centerInside"
+                android:background="#433491"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:focusable="false"
+                android:id="@+id/play"
+                ></ImageView>
+
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:src="@drawable/musicnext"
+                android:scaleType="centerInside"
+                android:layout_weight="1"
+                android:focusable="false"
+                android:id="@+id/next"
+                ></ImageView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
