@@ -2,11 +2,19 @@ package ir.ninjacoder.prograsssheet;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.ImageView;
 import android.widget.SeekBar;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -34,7 +42,21 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
     dialog.setContentView(bind.getRoot());
     bind.titlemusic.setText(md.getNameArtist());
     bind.submusic.setText(md.getNameAlbom());
+    dialog
+        .getBehavior()
+        .addBottomSheetCallback(
+            new BottomSheetBehavior.BottomSheetCallback() {
 
+              @Override
+              public void onStateChanged(View arg0, int state) {
+                if (state == BottomSheetBehavior.STATE_HIDDEN) {
+                  if (md != null) md.pause();
+                }
+              }
+
+              @Override
+              public void onSlide(View arg0, float arg1) {}
+            });
     bind.musicseekbar.setOnSeekBarChangeListener(this);
     Handler mHandler = new Handler(Looper.getMainLooper());
     ((Activity) context)
@@ -65,13 +87,15 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
     int seconds = durationInSeconds % 60;
     bind.tvname.setText(String.format("%d:%02d", minutes, seconds));
     bind.musicicon.setImageBitmap(md.getImageBitmap());
-    MaterialShapeDrawable shp = new MaterialShapeDrawable(
-      ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED,20)
-      .build()
-    );
-    bind.play.setBackground(shp);
-    
+    MaterialShapeDrawable shp =
+        new MaterialShapeDrawable(
+            ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, 20).build());
 
+    shp.setFillColor(
+        ColorStateList.valueOf(
+            MaterialColors.getColor(bind.play, com.google.android.material.R.attr.colorOnPrimary)));
+    bind.play.setBackground(shp);
+    bind.play.setColorFilter(MaterialColors.getColor(bind.play,com.google.android.material.R.attr.colorPrimary));
     bind.pre.setOnClickListener(
         v -> {
           if ((md.getCurrentDuration() - backwardTime) > 0) {
@@ -107,14 +131,39 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
 
           @Override
           public void onPause() {
-            bind.play.setImageResource(R.drawable.musicstop);
+            animateIcon(R.drawable.musicstop, bind.play);
           }
 
           @Override
           public void onStart() {
-            bind.play.setImageResource(R.drawable.musicplay);
+            animateIcon(R.drawable.musicplay, bind.play);
           }
         });
+  }
+
+  private void animateIcon(int newIcon, View view) {
+    AlphaAnimation fadeOut = new AlphaAnimation(1, 0);
+    fadeOut.setDuration(300);
+    fadeOut.setAnimationListener(
+        new Animation.AnimationListener() {
+          @Override
+          public void onAnimationEnd(Animation animation) {
+            ((ImageView) view).setImageResource(newIcon);
+
+            ScaleAnimation scaleIn = new ScaleAnimation(0.5f, 1.0f, 0.5f, 1.0f);
+            scaleIn.setDuration(300);
+            view.startAnimation(scaleIn);
+            view.setVisibility(View.VISIBLE);
+          }
+
+          @Override
+          public void onAnimationRepeat(Animation animation) {}
+
+          @Override
+          public void onAnimationStart(Animation animation) {}
+        });
+
+    bind.play.startAnimation(fadeOut);
   }
 
   public MusicSheet show() {
@@ -140,4 +189,10 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
 
   @Override
   public void onStopTrackingTouch(SeekBar arg0) {}
+
+  public void playMusic() {
+    if (dialog.isShowing()) {
+      md.start();
+    }
+  }
 }

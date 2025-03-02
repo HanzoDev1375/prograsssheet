@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
           //          sheet.show();
           
           mso.show();
+          mso.playMusic();
         });
     binding.btn.setOnLongClickListener(
         i -> {
@@ -66,18 +67,6 @@ public class MainActivity extends AppCompatActivity {
           layout.show();
           return true;
         });
-    
-    getOnBackPressedDispatcher()
-        .addCallback(
-            this,
-            new OnBackPressedCallback(true) {
-
-              @Override
-              public void handleOnBackPressed() {
-                mso.dismiss();
-                
-              }
-            });
   }
 
   @Override
