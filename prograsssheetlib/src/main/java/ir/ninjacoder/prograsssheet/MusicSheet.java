@@ -87,15 +87,8 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
     int seconds = durationInSeconds % 60;
     bind.tvname.setText(String.format("%d:%02d", minutes, seconds));
     bind.musicicon.setImageBitmap(md.getImageBitmap());
-    MaterialShapeDrawable shp =
-        new MaterialShapeDrawable(
-            ShapeAppearanceModel.builder().setAllCorners(CornerFamily.ROUNDED, 20).build());
-
-    shp.setFillColor(
-        ColorStateList.valueOf(
-            MaterialColors.getColor(bind.play, com.google.android.material.R.attr.colorOnPrimary)));
-    bind.play.setBackground(shp);
-    bind.play.setColorFilter(MaterialColors.getColor(bind.play,com.google.android.material.R.attr.colorPrimary));
+    bind.play.setColorFilter(
+        MaterialColors.getColor(bind.play, com.google.android.material.R.attr.colorPrimary));
     bind.pre.setOnClickListener(
         v -> {
           if ((md.getCurrentDuration() - backwardTime) > 0) {
@@ -150,7 +143,16 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
           public void onAnimationEnd(Animation animation) {
             ((ImageView) view).setImageResource(newIcon);
 
-            ScaleAnimation scaleIn = new ScaleAnimation(0.5f, 1.0f, 0.5f, 1.0f);
+            ScaleAnimation scaleIn =
+                new ScaleAnimation(
+                    0.5f,
+                    1.0f,
+                    0.5f,
+                    1.0f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f,
+                    Animation.RELATIVE_TO_SELF,
+                    0.5f);
             scaleIn.setDuration(300);
             view.startAnimation(scaleIn);
             view.setVisibility(View.VISIBLE);

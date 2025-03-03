@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    >
+    
+>
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
         android:layout_height="wrap_content"
@@ -21,7 +22,8 @@
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
-        >
+        
+    >
 
         <com.google.android.material.card.MaterialCardView
             android:layout_height="250dp"
@@ -29,7 +31,8 @@
             app:strokeColor="@android:color/transparent"
             android:layout_marginTop="8dp"
             app:cardForegroundColor="@android:color/transparent"
-            >
+            
+        >
 
             <ImageView
                 android:layout_height="match_parent"
@@ -80,7 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal"
-            >
+            
+        >
 
             <TextView
                 android:layout_height="match_parent"
@@ -114,7 +118,8 @@
             android:gravity="center_horizontal|center_vertical"
             android:padding="8dp"
             android:orientation="horizontal"
-            >
+            
+        >
 
             <ImageView
                 android:layout_height="wrap_content"
@@ -127,16 +132,25 @@
                 android:id="@+id/pre"
                 ></ImageView>
 
-            <ImageView
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:src="@drawable/musicplay"
-                android:scaleType="centerInside"
-                android:background="#433491"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:id="@+id/play"
-                ></ImageView>
+            <com.google.android.material.card.MaterialCardView
+                android:layout_height="60dp"
+                android:layout_width="60dp"
+                app:cardBackgroundColor="?@attr/colorOnPrimary"
+                app:strokeColor="@android:color/transparent"
+                
+                >
+
+                <ImageView
+                    android:layout_height="match_parent"
+                    android:layout_width="match_parent"
+                    android:src="@drawable/musicplay"
+                    android:scaleType="centerInside"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:id="@+id/play"
+                    ></ImageView>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <ImageView
                 android:layout_height="wrap_content"

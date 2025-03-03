@@ -39,13 +39,14 @@ public class MainActivity extends AppCompatActivity {
           1000);
     }
     
-    MusicSheet mso = new MusicSheet(MainActivity.this,"/storage/emulated/0/Download/Ali Danial - Ba Cheshat (320).mp3");
+    
 
     binding.btn.setOnClickListener(
         i -> {
           //          sheet.setMode(StateMod.PROGRASSH);
           //          sheet.setTitle("Hello Words393e9e9kckdkddkekekekeowowowowo2929292929292");
           //          sheet.show();
+          MusicSheet mso = new MusicSheet(MainActivity.this,binding.musicfile.getText().toString());
           
           mso.show();
           mso.playMusic();
