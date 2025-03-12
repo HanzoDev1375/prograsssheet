@@ -11,11 +11,13 @@ import android.content.pm.PackageManager;
 import ir.ninjacoder.prograsssheet.MusicSheet;
 import ir.ninjacoder.prograsssheet.PrograssSheet;
 import ir.ninjacoder.prograsssheet.LayoutSheetEditText;
+import ir.ninjacoder.prograsssheet.RecyclerViewSearchLayoutSheet;
 import ir.ninjacoder.prograsssheet.app.databinding.ActivityMainBinding;
 import ir.ninjacoder.prograsssheet.enums.StateMod;
 
 public class MainActivity extends AppCompatActivity {
   private ActivityMainBinding binding;
+  private MusicSheet mso;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -38,16 +40,14 @@ public class MainActivity extends AppCompatActivity {
           },
           1000);
     }
-    
-    
 
     binding.btn.setOnClickListener(
         i -> {
           //          sheet.setMode(StateMod.PROGRASSH);
           //          sheet.setTitle("Hello Words393e9e9kckdkddkekekekeowowowowo2929292929292");
           //          sheet.show();
-          MusicSheet mso = new MusicSheet(MainActivity.this,binding.musicfile.getText().toString());
-          
+          mso = new MusicSheet(MainActivity.this, binding.musicfile.getText().toString());
+
           mso.show();
           mso.playMusic();
         });
@@ -68,11 +68,16 @@ public class MainActivity extends AppCompatActivity {
           layout.show();
           return true;
         });
+    binding.btn2.setOnClickListener(
+        i -> {
+          new RecyclerViewSearchLayoutSheet(MainActivity.this);
+        });
   }
 
   @Override
   protected void onDestroy() {
     super.onDestroy();
     this.binding = null;
+    mso.setMusicDead();
   }
 }

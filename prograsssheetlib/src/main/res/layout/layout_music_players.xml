@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:orientation="vertical"
-    
->
+    >
 
     <com.google.android.material.bottomsheet.BottomSheetDragHandleView
         android:layout_height="wrap_content"
@@ -22,8 +21,7 @@
         android:gravity="center_horizontal|center_vertical"
         android:orientation="vertical"
         android:layout_gravity="center_horizontal"
-        
-    >
+        >
 
         <com.google.android.material.card.MaterialCardView
             android:layout_height="250dp"
@@ -31,8 +29,7 @@
             app:strokeColor="@android:color/transparent"
             android:layout_marginTop="8dp"
             app:cardForegroundColor="@android:color/transparent"
-            
-        >
+            >
 
             <ImageView
                 android:layout_height="match_parent"
@@ -69,45 +66,42 @@
             android:layout_gravity="center_horizontal|center_vertical"
             ></TextView>
 
-        <SeekBar
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:padding="6dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:focusable="false"
-            android:id="@+id/musicseekbar"
-            ></SeekBar>
-
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:gravity="center"
             android:orientation="horizontal"
-            
-        >
+            >
 
             <TextView
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:gravity="right"
-                android:textSize="12sp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
+                android:textSize="14sp"
+                android:layout_marginStart="7dp"
+                android:text="100"
                 android:id="@+id/tvtr"
-                android:text="400"
                 ></TextView>
 
-            <TextView
-                android:layout_height="match_parent"
+            <com.google.android.material.slider.Slider
+                android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:gravity="left"
-                android:textSize="12sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"
+                android:layout_weight="1.0"
+                android:value="0.0"
+                style="@style/Widget.Material3.Slider.Legacy"
+                app:trackHeight="5dp"
+                app:thumbHeight="20dp"
+                app:thumbWidth="20dp"
+                app:labelBehavior="gone"
+                android:id="@+id/musicseekbar"
+                ></com.google.android.material.slider.Slider>
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_marginEnd="7dp"
+                android:textSize="14sp"
+                android:text="200"
                 android:id="@+id/tvname"
-                android:text="4444"
                 ></TextView>
 
         </LinearLayout>
@@ -118,26 +112,24 @@
             android:gravity="center_horizontal|center_vertical"
             android:padding="8dp"
             android:orientation="horizontal"
-            
-        >
+            >
 
             <ImageView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                app:srcCompat="@drawable/musicprevious"
                 android:scaleType="centerInside"
                 android:background="?@attr/selectableItemBackground"
-                android:layout_weight="1"
                 android:tint="?attr/colorPrimary"
+                app:srcCompat="@drawable/musicprevious"
+                android:layout_weight="1"
                 android:id="@+id/pre"
                 ></ImageView>
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_height="60dp"
                 android:layout_width="60dp"
-                app:cardBackgroundColor="?@attr/colorOnPrimary"
                 app:strokeColor="@android:color/transparent"
-                
+                app:cardBackgroundColor="?@attr/colorOnPrimary"
                 >
 
                 <ImageView

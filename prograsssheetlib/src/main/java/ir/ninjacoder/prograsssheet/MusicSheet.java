@@ -18,18 +18,19 @@ import com.google.android.material.color.MaterialColors;
 import com.google.android.material.shape.CornerFamily;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.slider.Slider;
 import ir.ninjacoder.prograsssheet.databinding.LayoutMusicPlayersBinding;
 import ir.ninjacoder.prograsssheet.interfaces.MediaPlayerListener;
 import java.io.File;
 
-public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
+public class MusicSheet implements Slider.OnChangeListener {
 
   private Context context;
   private String musicpatch;
   private Music md;
   private double forwardTime = 0;
   private double backwardTime = 0;
-  private BottomSheetDialog dialog;
+  private Sheet dialog;
   private LayoutMusicPlayersBinding bind;
 
   public MusicSheet(Context context, String musicpatch) {
@@ -38,8 +39,8 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
     md = new Music(context, musicpatch);
     md.setPathSource(new File(musicpatch));
     bind = LayoutMusicPlayersBinding.inflate(LayoutInflater.from(context));
-    dialog = new BottomSheetDialog(context);
-    dialog.setContentView(bind.getRoot());
+    dialog = new Sheet(context);
+    /// dialog.setContentView(bind.getRoot());
     bind.titlemusic.setText(md.getNameArtist());
     bind.submusic.setText(md.getNameAlbom());
     dialog
@@ -57,7 +58,7 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
               @Override
               public void onSlide(View arg0, float arg1) {}
             });
-    bind.musicseekbar.setOnSeekBarChangeListener(this);
+    bind.musicseekbar.addOnChangeListener(this);
     Handler mHandler = new Handler(Looper.getMainLooper());
     ((Activity) context)
         .runOnUiThread(
@@ -67,7 +68,7 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
               public void run() {
                 if (md != null) {
                   int mCurrentPosition = 0;
-                  bind.musicseekbar.setProgress(md.getCurrentDuration() / 90);
+                  bind.musicseekbar.setValue(md.getCurrentDuration() / 90);
                   int currentPositionInMillis =
                       md.getCurrentDuration(); // زمان در حال پخش در میلی‌ثانیه
                   int currentPositionInSeconds = currentPositionInMillis / 1000; // زمان در ثانیه
@@ -111,7 +112,7 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
             md.start();
           }
         });
-    bind.musicseekbar.setMax(md.getDuration() / 90);
+    bind.musicseekbar.setValueTo(md.getDuration() / 90);
     start();
   }
 
@@ -179,22 +180,36 @@ public class MusicSheet implements SeekBar.OnSeekBarChangeListener {
     return this;
   }
 
-  @Override
-  public void onProgressChanged(SeekBar arg0, int progressValue, boolean arg2) {
-    if (md != null && arg2) {
-      md.seekTo(progressValue * 90);
+  public void playMusic() {
+    if (dialog.isShowing()) {
+      md.start();
+    }
+  }
+
+  class Sheet extends CustomSheet {
+
+    public Sheet(Context c) {
+      super(c);
+    }
+
+    @Override
+    public View getView() {
+      return bind.getRoot();
     }
   }
 
   @Override
-  public void onStartTrackingTouch(SeekBar arg0) {}
+  public void onValueChange(Slider arg0, float progressValue, boolean arg2) {
+    if (md != null && arg2) {
+      md.seekTo((int) progressValue * 90);
+    }
+  }
 
-  @Override
-  public void onStopTrackingTouch(SeekBar arg0) {}
-
-  public void playMusic() {
-    if (dialog.isShowing()) {
-      md.start();
+  public void setMusicDead() {
+    if (md != null) {
+      md.pause();
+      md.release();
+      md = null;
     }
   }
 }

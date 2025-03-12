@@ -6,21 +6,27 @@
     android:layout_width="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    >
+>
 
     <EditText
-        android:hint="add music file"
-        android:id="@+id/musicfile"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:hint="add music file"
         android:layout_marginTop="9dp"
-        ></EditText>
+        android:id="@+id/musicfile"
+    />
 
     <Button
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:text="Click!"
         android:id="@+id/btn"
-        ></Button>
+    />
 
+    <Button
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="Click!"
+        android:id="@+id/btn2"
+    />
 </LinearLayout>
