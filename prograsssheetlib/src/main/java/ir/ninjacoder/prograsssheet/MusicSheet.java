@@ -3,15 +3,21 @@ package ir.ninjacoder.prograsssheet;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import androidx.core.graphics.ColorUtils;
+import androidx.palette.graphics.Palette;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.color.MaterialColors;
@@ -43,6 +49,7 @@ public class MusicSheet implements Slider.OnChangeListener {
     /// dialog.setContentView(bind.getRoot());
     bind.titlemusic.setText(md.getNameArtist());
     bind.submusic.setText(md.getNameAlbom());
+    setMatchParentDialog(true);
     dialog
         .getBehavior()
         .addBottomSheetCallback(
@@ -58,6 +65,7 @@ public class MusicSheet implements Slider.OnChangeListener {
               @Override
               public void onSlide(View arg0, float arg1) {}
             });
+    setAsPaletteBackground(true);
     bind.musicseekbar.addOnChangeListener(this);
     Handler mHandler = new Handler(Looper.getMainLooper());
     ((Activity) context)
@@ -211,5 +219,65 @@ public class MusicSheet implements Slider.OnChangeListener {
       md.release();
       md = null;
     }
+  }
+
+  public void setAsPaletteBackground(boolean is) {
+    if (is) {
+      Bitmap map = md.getImageBitmap();
+      if (map != null) {
+        Palette.from(map)
+            .generate(
+                pa -> {
+                  int dominantColor = pa.getDarkMutedColor(Color.WHITE); // رنگ غالب
+                  int vibrantColor = pa.getDarkVibrantColor(Color.WHITE); // رنگ پرانرژی
+                  int mutedColor = pa.getDarkMutedColor(Color.BLACK); //   رنگ مات
+
+                  bind.getRoot().setBackgroundColor(darkenColor(dominantColor, 0.4f));
+                  bind.next.setColorFilter(darkenColor(mutedColor, 5.0f));
+                  autoColor(darkenColor(mutedColor, 5.0f), bind.play);
+                  bind.pre.setColorFilter(darkenColor(mutedColor, 5.0f));
+                  bind.cardmusic.setCardBackgroundColor(darkenColor(mutedColor, 3.3f));
+                  bind.musicseekbar.setThumbTintList(
+                      ColorStateList.valueOf(darkenColor(mutedColor, 4.0f)));
+                  bind.musicseekbar.setTrackActiveTintList(
+                      ColorStateList.valueOf(darkenColor(mutedColor, 4.0f)));
+                  int colo = darkenColor(mutedColor, 5.0f);
+                  bind.submusic.setTextColor(colo);
+                  bind.tvname.setTextColor(colo);
+                  bind.tvtr.setTextColor(colo);
+                  bind.titlemusic.setTextColor(colo);
+                  dialog.getWindow().setNavigationBarColor(darkenColor(dominantColor, 0.4f));
+                  dialog.setTitle("Hello");
+                });
+      }
+    }
+  }
+
+  private int darkenColor(int color, float factor) {
+    // تجزیه رنگ به مقادیر ARGB
+    int a = Color.alpha(color);
+    int r = (int) (Color.red(color) * factor);
+    int g = (int) (Color.green(color) * factor);
+    int b = (int) (Color.blue(color) * factor);
+
+    // محدود کردن مقادیر به بازه ۰ تا ۲۵۵
+    r = Math.max(0, Math.min(r, 255));
+    g = Math.max(0, Math.min(g, 255));
+    b = Math.max(0, Math.min(b, 255));
+
+    // بازگرداندن رنگ جدید
+    return Color.argb(a, r, g, b);
+  }
+
+  void autoColor(int colors, ImageView views) {
+    if (ColorUtils.calculateLuminance(colors) > 0.5) {
+      views.setColorFilter(Color.BLACK);
+    } else if (ColorUtils.calculateLuminance(colors) <= 0.5) {
+      views.setColorFilter(Color.WHITE);
+    }
+  }
+
+  void setMatchParentDialog(boolean is) {
+    if (is) dialog.setFullScreen();
   }
 }

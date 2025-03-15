@@ -1,22 +1,31 @@
 package ir.ninjacoder.prograsssheet.app;
 
 import android.Manifest;
+import android.net.Uri;
+import android.widget.ImageView;
 import android.widget.Toast;
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.content.pm.PackageManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestBuilder;
+import android.graphics.drawable.PictureDrawable;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import ir.ninjacoder.prograsssheet.MusicSheet;
 import ir.ninjacoder.prograsssheet.PrograssSheet;
 import ir.ninjacoder.prograsssheet.LayoutSheetEditText;
 import ir.ninjacoder.prograsssheet.RecyclerViewSearchLayoutSheet;
 import ir.ninjacoder.prograsssheet.app.databinding.ActivityMainBinding;
-import ir.ninjacoder.prograsssheet.enums.StateMod;
+import ir.ninjacoder.prograsssheet.app.glidesvg.SvgSoftwareLayerSetter;
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
   private ActivityMainBinding binding;
+  private RequestBuilder<PictureDrawable> requestBuilder;
   private MusicSheet mso;
 
   @Override
@@ -40,6 +49,26 @@ public class MainActivity extends AppCompatActivity {
           },
           1000);
     }
+    Uri uri = Uri.fromFile(new File("/storage/emulated/0/Android/10/Ninja/test.svg"));
+    binding.musicfile.setText("/storage/emulated/0/Download/07. Shadmehr Aghili - Mahaal.mp3");
+   requestBuilder =   Glide.with(this)
+        .as(PictureDrawable.class)
+        //  .placeholder(R.drawable.image_loading)
+        .error(R.drawable.ic_launcher_background)
+        .transition(withCrossFade())
+        .diskCacheStrategy(DiskCacheStrategy.NONE)
+        .listener(new SvgSoftwareLayerSetter());
+        
+        requestBuilder.load(uri).into(binding.videoview);
+        
+
+    // for size icon
+    ImageView.ScaleType curr = binding.videoview.getScaleType();
+
+    ImageView.ScaleType[] all = ImageView.ScaleType.values();
+    int nextOrdinal = (curr.ordinal() + 1) % all.length;
+    ImageView.ScaleType next = all[nextOrdinal];
+    binding.videoview.setScaleType(next);
 
     binding.btn.setOnClickListener(
         i -> {
@@ -70,7 +99,10 @@ public class MainActivity extends AppCompatActivity {
         });
     binding.btn2.setOnClickListener(
         i -> {
-          new RecyclerViewSearchLayoutSheet(MainActivity.this);
+          var it = new RecyclerViewSearchLayoutSheet(MainActivity.this);
+          it.getRecyclerView().setLayoutManager(new LinearLayoutManager(MainActivity.this));
+          it.setAdapter(new AdTest(MainActivity.this));
+          it.show();
         });
   }
 
