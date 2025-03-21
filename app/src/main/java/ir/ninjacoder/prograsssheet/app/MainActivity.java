@@ -1,6 +1,8 @@
 package ir.ninjacoder.prograsssheet.app;
 
 import android.Manifest;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -14,6 +16,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import android.graphics.drawable.PictureDrawable;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.tabs.TabLayout;
 import ir.ninjacoder.prograsssheet.MusicSheet;
 import ir.ninjacoder.prograsssheet.PrograssSheet;
 import ir.ninjacoder.prograsssheet.LayoutSheetEditText;
@@ -21,6 +26,7 @@ import ir.ninjacoder.prograsssheet.RecyclerViewSearchLayoutSheet;
 import ir.ninjacoder.prograsssheet.app.databinding.ActivityMainBinding;
 import ir.ninjacoder.prograsssheet.app.glidesvg.SvgSoftwareLayerSetter;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import ir.ninjacoder.prograsssheet.enums.ModBackground;
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,18 +55,42 @@ public class MainActivity extends AppCompatActivity {
           },
           1000);
     }
+
+    // Get badge from tab (or create one if none exists)
+
+    binding.tab.addTab(binding.tab.newTab().setText("hello"));
+
+    binding.tab.addTab(binding.tab.newTab().setText("hello"));
+    binding.tab.addTab(binding.tab.newTab().setText("hello"));
+    TabLayout.Tab existingTab = binding.tab.getTabAt(1);
+    binding.prf.setBackgroundMod(ModBackground.TOP);
+    binding.prfmiddel.setBackgroundMod(ModBackground.MIDDLE);
+    binding.prfbottom.setBackgroundMod(ModBackground.BOTTOM);
+
+    if (existingTab != null) {
+      // دریافت یا ایجاد BadgeDrawable برای تب
+      BadgeDrawable badge = existingTab.getOrCreateBadge();
+
+      // تنظیم شماره برای نشان (Badge)
+      // badge.setNumber(200);
+      badge.setText("N");
+      badge.setBadgeGravity(BadgeDrawable.BADGE_FIXED_EDGE_END);
+      // تنظیم رنگ پس‌زمینه نشان (Badge)
+
+      badge.setTintList(ColorStateList.valueOf(Color.BLUE));
+    }
     Uri uri = Uri.fromFile(new File("/storage/emulated/0/Android/10/Ninja/test.svg"));
     binding.musicfile.setText("/storage/emulated/0/Download/07. Shadmehr Aghili - Mahaal.mp3");
-   requestBuilder =   Glide.with(this)
-        .as(PictureDrawable.class)
-        //  .placeholder(R.drawable.image_loading)
-        .error(R.drawable.ic_launcher_background)
-        .transition(withCrossFade())
-        .diskCacheStrategy(DiskCacheStrategy.NONE)
-        .listener(new SvgSoftwareLayerSetter());
-        
-        requestBuilder.load(uri).into(binding.videoview);
-        
+    requestBuilder =
+        Glide.with(this)
+            .as(PictureDrawable.class)
+            //  .placeholder(R.drawable.image_loading)
+            .error(R.drawable.ic_launcher_background)
+            .transition(withCrossFade())
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .listener(new SvgSoftwareLayerSetter());
+
+    requestBuilder.load(uri).into(binding.videoview);
 
     // for size icon
     ImageView.ScaleType curr = binding.videoview.getScaleType();
@@ -77,8 +107,9 @@ public class MainActivity extends AppCompatActivity {
           //          sheet.show();
           mso = new MusicSheet(MainActivity.this, binding.musicfile.getText().toString());
 
-          mso.show();
-          mso.playMusic();
+          // mso.show();
+          //  mso.playMusic();
+          addStarToTab(1, binding.tab);
         });
     binding.btn.setOnLongClickListener(
         i -> {
@@ -99,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
         });
     binding.btn2.setOnClickListener(
         i -> {
+          removedStarToTab(1, binding.tab);
           var it = new RecyclerViewSearchLayoutSheet(MainActivity.this);
           it.getRecyclerView().setLayoutManager(new LinearLayoutManager(MainActivity.this));
           it.setAdapter(new AdTest(MainActivity.this));
@@ -111,5 +143,25 @@ public class MainActivity extends AppCompatActivity {
     super.onDestroy();
     this.binding = null;
     mso.setMusicDead();
+  }
+
+  void addStarToTab(int pos, TabLayout tab) {
+    var getIndexTab = tab.getTabAt(pos);
+    if (getIndexTab != null) {
+      String tabText = getIndexTab.getText().toString();
+      if (!tabText.startsWith("*")) {
+        getIndexTab.setText("*" + tabText);
+      }
+    }
+  }
+
+  void removedStarToTab(int pos, TabLayout tab) {
+    var getIndexTab = tab.getTabAt(pos);
+    if (getIndexTab != null) {
+      String tabText = getIndexTab.getText().toString();
+      if (tabText.startsWith("*")) {
+        getIndexTab.setText(tabText.substring(1));
+      }
+    }
   }
 }

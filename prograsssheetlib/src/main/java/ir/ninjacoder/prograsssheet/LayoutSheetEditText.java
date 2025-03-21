@@ -24,6 +24,7 @@ public class LayoutSheetEditText implements TextWatcher {
   private Sheet dialog;
   private SharedPreferences prf;
   private boolean isAnim = false;
+    
 
   private StateInputType input = StateInputType.TEXT;
 
