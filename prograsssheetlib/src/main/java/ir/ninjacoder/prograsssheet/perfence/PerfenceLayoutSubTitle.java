@@ -1,6 +1,7 @@
 package ir.ninjacoder.prograsssheet.perfence;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -17,15 +18,10 @@ public class PerfenceLayoutSubTitle extends LinearLayoutCompat {
 
   public PerfenceLayoutSubTitle(Context context, AttributeSet set) {
     super(context, set);
-    init();
+    init(set,context);
   }
 
-  public PerfenceLayoutSubTitle(Context context) {
-    super(context);
-    init();
-  }
-
-  void init() {
+  void init(AttributeSet attrs,Context context) {
     binding = LayoutPerfenceGroupsBinding.inflate(LayoutInflater.from(getContext()));
     if (binding != null) {
       removeAllViews();
@@ -36,7 +32,27 @@ public class PerfenceLayoutSubTitle extends LinearLayoutCompat {
               LinearLayoutCompat.LayoutParams.WRAP_CONTENT);
 
       binding.getRoot().setLayoutParams(params);
-      updateBackground();
+      if (attrs != null) {
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.PreferenceSwitchGroup);
+        int modBackground = a.getInt(R.styleable.PreferenceSwitchGroup_modBackground, 0);
+        a.recycle();
+
+        switch (modBackground) {
+          case 0:
+            mod = ModBackground.NONE;
+            break;
+          case 1:
+            mod = ModBackground.TOP;
+            break;
+          case 2:
+            mod = ModBackground.MIDDLE;
+            break;
+          case 3:
+            mod = ModBackground.BOTTOM;
+            break;
+        }
+        updateBackground();
+      }
     }
   }
 
@@ -48,10 +64,6 @@ public class PerfenceLayoutSubTitle extends LinearLayoutCompat {
     binding.description.setText(value);
   }
 
-  public void setOnClickListener(OnClickListener c) {
-    binding.getRoot().setOnClickListener(c);
-  }
-
   public void setBackgroundMod(ModBackground mod) {
     this.mod = mod;
     updateBackground();
@@ -60,13 +72,13 @@ public class PerfenceLayoutSubTitle extends LinearLayoutCompat {
   public void updateBackground() {
     switch (mod) {
       case BOTTOM:
-        setBackgroundResource(R.drawable.perfence_bottom);
+        setBackground(Shape.bottom(this));
         break;
       case TOP:
-        setBackgroundResource(R.drawable.perfence_top);
+        setBackground(Shape.top(this));
         break;
       case MIDDLE:
-        setBackgroundResource(R.drawable.perfence_middel);
+        setBackground(Shape.middel(this));
         break;
       case NONE:
         setBackgroundColor(Color.TRANSPARENT);

@@ -19,13 +19,15 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.tabs.TabLayout;
+import ir.ninjacoder.prograsssheet.ExitSheet;
 import ir.ninjacoder.prograsssheet.MusicSheet;
 import ir.ninjacoder.prograsssheet.PrograssSheet;
-import ir.ninjacoder.prograsssheet.LayoutSheetEditText;
+import ir.ninjacoder.prograsssheet.*;
 import ir.ninjacoder.prograsssheet.RecyclerViewSearchLayoutSheet;
 import ir.ninjacoder.prograsssheet.app.databinding.ActivityMainBinding;
 import ir.ninjacoder.prograsssheet.app.glidesvg.SvgSoftwareLayerSetter;
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+import ir.ninjacoder.prograsssheet.colorview.ColorPickerView;
 import ir.ninjacoder.prograsssheet.enums.ModBackground;
 import java.io.File;
 
@@ -63,10 +65,19 @@ public class MainActivity extends AppCompatActivity {
     binding.tab.addTab(binding.tab.newTab().setText("hello"));
     binding.tab.addTab(binding.tab.newTab().setText("hello"));
     TabLayout.Tab existingTab = binding.tab.getTabAt(1);
-    binding.prf.setBackgroundMod(ModBackground.TOP);
-    binding.prfmiddel.setBackgroundMod(ModBackground.MIDDLE);
-    binding.prfbottom.setBackgroundMod(ModBackground.BOTTOM);
-
+//    binding.prf.setBackgroundMod(ModBackground.TOP);
+//    binding.prfmiddel.setBackgroundMod(ModBackground.MIDDLE);
+//    binding.prfbottom.setBackgroundMod(ModBackground.BOTTOM);
+    binding.prf.setOnClickListener(i -> {
+        var its = new ColorPickerSheet(MainActivity.this);
+        its.setOnColorCallBack(str ->{
+            Toast.makeText(getApplicationContext(),str,2).show();
+        });
+    });
+//    binding.switchm.setBackgroundMod(ModBackground.TOP);
+//    binding.switchbottom.setBackgroundMod(ModBackground.BOTTOM);
+//    binding.switchmiddel.setBackgroundMod(ModBackground.MIDDLE);
+    binding.switchm.setIcon(R.drawable.ic_launcher_background);
     if (existingTab != null) {
       // دریافت یا ایجاد BadgeDrawable برای تب
       BadgeDrawable badge = existingTab.getOrCreateBadge();
